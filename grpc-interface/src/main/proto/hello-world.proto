@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package pl.edu.pwr.rsi.grpc.interface;
+
+option java_multiple_files = true;
+option java_package = "pl.edu.pwr.rsi.grpc.interfaces.lib";
+option java_outer_classname = "HelloWorldProto";
+
+// service definition
+service MyService {
+    // test method
+    rpc SayHello (SimpleRequest) returns (SimpleReply) { }
+
+    // method to add student on server - synchronous request
+    rpc AddStudent (Student) returns (SimpleReply) { }
+
+    // method to get student by index - synchronous request
+    rpc GetStudent (StudentIndex) returns (Student) { }
+
+    // method to add students on server - stream request
+    rpc StreamAddStudents (stream Student) returns (SimpleReply) { }
+
+    // method to read students from server - stream request
+    rpc StreamGetStudents (Empty) returns (stream Student) { }
+
+    // method to get amount of students by field of study - asynchronous request
+    rpc AmountOfStudentsByFieldOfStudy (FieldOfStudy) returns (Amount) { }
+
+    // method to get size of data from server - helper method
+    rpc RecordsCount (Empty) returns (CountReply) { }
+
+    // method to upload image on server
+    rpc UploadImage (UploadImageRequest) returns (SimpleReply) { }
+
+    // method to read image from server
+    rpc GetImage (Empty) returns (ReadImageReply) { }
+}
+
+// fields must have assigned numbers - ids for binary format
+
+// simple request with string message field
+message SimpleRequest {
+    string name = 1;
+}
+
+// simple reply with string message field
+message SimpleReply {
+    string message = 1;
+}
+
+// student index number - simple message
+message StudentIndex {
+    int32 indexNumber = 1;
+}
+
+// empty message
+message Empty { }
+
+// amount (of students) - response message
+message Amount {
+    int32 amount = 1;
+}
+
+// name of field of study
+message FieldOfStudy {
+    string fieldOfStudy = 1;
+}
+
+// student - complex message
+message Student {
+    string name = 1;
+    string surname = 2;
+    int32 indexNumber = 3;
+    string fieldOfStudy = 4;
+}
+
+// message that informs about data size
+message CountReply {
+    int32 count = 1;
+}
+
+// message to upload image on server
+message UploadImageRequest {
+    bytes image = 1;
+}
+
+// message to get message from server
+message ReadImageReply {
+    bytes image = 1;
+    string message = 2;
+}
